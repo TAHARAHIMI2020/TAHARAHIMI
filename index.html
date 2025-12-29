@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light" data-lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بلیتو | سامانه رزرو بلیت سفر</title>
+    
+    <!-- Bootstrap 5.3 RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vazirmatn Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==================== VARIABLES ==================== */
+        :root {
+            /* Light Theme Colors */
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --success-color: #4cc9f0;
+            --warning-color: #f8961e;
+            --danger-color: #ef233c;
+            
+            --bg-color: #ffffff;
+            --surface-color: #f8f9fa;
+            --text-color: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            
+            /* Font */
+            --font-family: 'Vazirmatn', sans-serif;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme Colors */
+            --primary-color: #5a6ff0;
+            --secondary-color: #4a1fb8;
+            --accent-color: #ff4da6;
+            --success-color: #6cd4f5;
+            --warning-color: #ffa94d;
+            --danger-color: #ff6b6b;
+            
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #f8f9fa;
+            --text-secondary: #adb5bd;
+            --border-color: #495057;
+            
+            --card-bg: #1e1e1e;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ==================== BASE STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        /* RTL/LTR Support */
+        [dir="rtl"] {
+            text-align: right;
+        }
+
+        [dir="ltr"] {
+            text-align: left;
+        }
+
+        /* ==================== HEADER ==================== */
+        .header {
+            z-index: 1000;
+        }
+
+        .navbar {
+            padding: 1rem 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .brand-text {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, #fff, #ffd166);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Language Switcher */
+        .language-switcher .dropdown-menu {
+            min-width: 150px;
+        }
+
+        .language-switcher .dropdown-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .language-switcher .dropdown-item:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero-section {
+            padding: 100px 0 50px;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(58, 12, 163, 0.05));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(45deg, var(--primary-color), transparent);
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .stats {
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Search Box */
+        .search-box {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+
+        .search-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .search-types {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-type {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            border-radius: 50px;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-type.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .search-type:hover:not(.active) {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .form-floating {
+            margin-bottom: 1rem;
+        }
+
+        .form-floating > label {
+            color: var(--text-secondary);
+        }
+
+        .form-control, .form-select {
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            height: calc(3.5rem + 2px);
+            padding: 1rem 0.75rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+            background: var(--surface-color);
+        }
+
+        /* ==================== TICKET CARDS ==================== */
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .ticket-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ticket-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .ticket-card.featured {
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 20px rgba(67, 97, 238, 0.2);
+        }
+
+        .ticket-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .ticket-header h5 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .ticket-type {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .ticket-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .ticket-info {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .info-item i {
+            color: var(--primary-color);
+            width: 20px;
+        }
+
+        .ticket-airline {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--surface-color);
+            border-radius: 10px;
+        }
+
+        .ticket-airline img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .ticket-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .price .old-price {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        .price .current-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* ==================== FEATURE CARDS ==================== */
+        .feature-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h5 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* ==================== TESTIMONIALS ==================== */
+        .testimonials-section {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.05), rgba(58, 12, 163, 0.02));
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .testimonial-rating {
+            color: var(--warning-color);
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .testimonial-author h6 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .testimonial-author span {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            margin-top: 5rem;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 300px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer h5 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-right: 5px;
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-contact li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-contact i {
+            color: var(--primary-color);
+            width: 20px;
+        }
+
+        .app-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom-links {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: flex-end;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        /* Scroll to Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .search-types {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            
+            .stats {
+                justify-content: center;
+                gap: 1.5rem;
+            }
+            
+            .stat-item h3 {
+                font-size: 2rem;
+            }
+            
+            .footer-bottom-links {
+                justify-content: flex-start;
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .search-box {
+                padding: 1.5rem;
+            }
+            
+            .ticket-card, .feature-card, .testimonial-card {
+                padding: 1.25rem;
+            }
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* ==================== LOADING ==================== */
+        body.loading {
+            overflow: hidden;
+        }
+
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        body.loaded .loading-spinner {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Loading Spinner -->
+    <div class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="header sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-lg">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand fw-bold fs-3 d-flex align-items-center" href="#">
+                    <i class="fas fa-ticket-alt me-2"></i>
+                    <span class="brand-text">Bilito</span>
+                </a>
+                
+                <!-- Language & Theme Switchers -->
+                <div class="d-flex align-items-center">
+                    <!-- Language Switcher -->
+                    <div class="dropdown me-3 language-switcher">
+                        <button class="btn btn-outline-light dropdown-toggle d-flex align-items-center" type="button" id="languageDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-globe me-2"></i>
+                            <span class="lang-text">فارسی</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item lang-option" data-lang="fa">فارسی</a></li>
+                            <li><a class="dropdown-item lang-option" data-lang="en">English</a></li>
+                            <li><a class="dropdown-item lang-option" data-lang="ar">العربية</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Theme Toggle -->
+                    <button class="btn btn-outline-light theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun d-none"></i>
+                    </button>
+                    
+                    <!-- Mobile Toggle -->
+                    <button class="navbar-toggler ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                
+                <!-- Navigation Menu -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" href="#" data-key="nav.home">صفحه اصلی</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-key="nav.flights">بلیط هواپیما</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-key="nav.trains">بلیط قطار</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-key="nav.buses">بلیط اتوبوس</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-key="nav.hotels">هتل</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-key="nav.support">پشتیبانی</a></li>
+                        <li class="nav-item">
+                            <a class="btn btn-warning fw-bold mx-2" href="#" data-key="nav.login">
+                                <i class="fas fa-user me-2"></i>ورود / ثبت نام
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-center text-lg-start">
+                    <h1 class="hero-title" data-key="hero.title">سفر راحت و ارزان با بلیتو</h1>
+                    <p class="hero-subtitle" data-key="hero.subtitle">
+                        بلیت هواپیما، قطار و اتوبوس را با بهترین قیمت رزرو کنید
+                    </p>
+                    
+                    <!-- Stats -->
+                    <div class="d-flex justify-content-center justify-content-lg-start stats mt-4">
+                        <div class="stat-item">
+                            <h3>50,000+</h3>
+                            <p data-key="stats.users">کاربر فعال</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>2,500+</h3>
+                            <p data-key="stats.routes">مسیر فعال</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>98%</h3>
+                            <p data-key="stats.satisfaction">رضایت مشتری</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <!-- Search Box -->
+                    <div class="search-box shadow-lg">
+                        <div class="search-header">
+                            <h4 data-key="search.title">جستجوی بلیت</h4>
+                            <div class="search-types">
+                                <button class="search-type active" data-type="flight">
+                                    <i class="fas fa-plane"></i>
+                                    <span data-key="search.flight">پرواز</span>
+                                </button>
+                                <button class="search-type" data-type="train">
+                                    <i class="fas fa-train"></i>
+                                    <span data-key="search.train">قطار</span>
+                                </button>
+                                <button class="search-type" data-type="bus">
+                                    <i class="fas fa-bus"></i>
+                                    <span data-key="search.bus">اتوبوس</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <form class="search-form">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="origin" placeholder="مبدأ">
+                                        <label for="origin" data-key="search.origin">مبدأ</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="destination" placeholder="مقصد">
+                                        <label for="destination" data-key="search.destination">مقصد</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control" id="departureDate">
+                                        <label for="departureDate" data-key="search.departure">تاریخ رفت</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control" id="returnDate">
+                                        <label for="returnDate" data-key="search.return">تاریخ برگشت</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="passengers">
+                                            <option value="1">1 مسافر</option>
+                                            <option value="2">2 مسافر</option>
+                                            <option value="3">3 مسافر</option>
+                                            <option value="4">4 مسافر</option>
+                                        </select>
+                                        <label for="passengers" data-key="search.passengers">مسافران</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="class">
+                                            <option value="economy" data-key="search.class.economy">اکونومی</option>
+                                            <option value="business" data-key="search.class.business">بیزینس</option>
+                                            <option value="first" data-key="search.class.first">فرست کلاس</option>
+                                        </select>
+                                        <label for="class" data-key="search.class">کلاس</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-warning btn-lg w-100 fw-bold" data-key="search.button">
+                                        <i class="fas fa-search me-2"></i>جستجوی بلیت
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FEATURED TICKETS ==================== -->
+    <section class="featured-tickets py-5">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2 class="section-title" data-key="featured.title">پیشنهادهای ویژه امروز</h2>
+                <p class="section-subtitle" data-key="featured.subtitle">بهترین قیمت‌ها را از دست ندهید</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Ticket 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="ticket-card featured">
+                        <div class="ticket-badge">
+                            <span data-key="ticket.popular">پربازدید</span>
+                        </div>
+                        <div class="ticket-header">
+                            <h5>تهران → مشهد</h5>
+                            <div class="ticket-type">
+                                <i class="fas fa-plane"></i>
+                                <span data-key="ticket.flight">پرواز</span>
+                            </div>
+                        </div>
+                        <div class="ticket-body">
+                            <div class="ticket-info">
+                                <div class="info-item">
+                                    <i class="far fa-calendar"></i>
+                                    <span>20 فروردین 1404</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>1 ساعت 30 دقیقه</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-chair"></i>
+                                    <span data-key="ticket.economy">اکونومی</span>
+                                </div>
+                            </div>
+                            <div class="ticket-airline">
+                                <img src="https://cdn-icons-png.flaticon.com/128/824/824100.png" alt="ایران ایر">
+                                <span>ایران ایر</span>
+                            </div>
+                        </div>
+                        <div class="ticket-footer">
+                            <div class="price">
+                                <span class="old-price">3,200,000 تومان</span>
+                                <span class="current-price">2,450,000 تومان</span>
+                            </div>
+                            <button class="btn btn-primary" data-key="ticket.book">
+                                <i class="fas fa-shopping-cart me-2"></i>رزرو بلیت
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ticket 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="ticket-card">
+                        <div class="ticket-badge">
+                            <span data-key="ticket.discount">تخفیف ویژه</span>
+                        </div>
+                        <div class="ticket-header">
+                            <h5>اصفهان → شیراز</h5>
+                            <div class="ticket-type">
+                                <i class="fas fa-train"></i>
+                                <span data-key="ticket.train">قطار</span>
+                            </div>
+                        </div>
+                        <div class="ticket-body">
+                            <div class="ticket-info">
+                                <div class="info-item">
+                                    <i class="far fa-calendar"></i>
+                                    <span>22 فروردین 1404</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>6 ساعت</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-bed"></i>
+                                    <span data-key="ticket.4berth">4 تخته</span>
+                                </div>
+                            </div>
+                            <div class="ticket-airline">
+                                <img src="https://cdn-icons-png.flaticon.com/128/2972/2972543.png" alt="رجا">
+                                <span>قطار رجا</span>
+                            </div>
+                        </div>
+                        <div class="ticket-footer">
+                            <div class="price">
+                                <span class="old-price">1,100,000 تومان</span>
+                                <span class="current-price">890,000 تومان</span>
+                            </div>
+                            <button class="btn btn-primary" data-key="ticket.book">
+                                <i class="fas fa-shopping-cart me-2"></i>رزرو بلیت
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ticket 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="ticket-card">
+                        <div class="ticket-header">
+                            <h5>تبریز → تهران</h5>
+                            <div class="ticket-type">
+                                <i class="fas fa-bus"></i>
+                                <span data-key="ticket.bus">اتوبوس</span>
+                            </div>
+                        </div>
+                        <div class="ticket-body">
+                            <div class="ticket-info">
+                                <div class="info-item">
+                                    <i class="far fa-calendar"></i>
+                                    <span>25 فروردین 1404</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>8 ساعت</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-star"></i>
+                                    <span data-key="ticket.vip">VIP</span>
+                                </div>
+                            </div>
+                            <div class="ticket-airline">
+                                <img src="https://cdn-icons-png.flaticon.com/128/3097/3097140.png" alt="سیر و سفر">
+                                <span>سیر و سفر</span>
+                            </div>
+                        </div>
+                        <div class="ticket-footer">
+                            <div class="price">
+                                <span class="current-price">520,000 تومان</span>
+                            </div>
+                            <button class="btn btn-primary" data-key="ticket.book">
+                                <i class="fas fa-shopping-cart me-2"></i>رزرو بلیت
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                <a href="#" class="btn btn-outline-primary btn-lg" data-key="featured.seeAll">
+                    <i class="fas fa-list me-2"></i>مشاهده همه پیشنهادها
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FEATURES ==================== -->
+    <section class="features-section py-5">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2 class="section-title" data-key="features.title">چرا بلیتو را انتخاب کنید؟</h2>
+                <p class="section-subtitle" data-key="features.subtitle">مزایای رزرو با ما</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h5 data-key="features.support.title">پشتیبانی 24/7</h5>
+                        <p data-key="features.support.desc">در تمام ساعات شبانه‌روز کنار شما هستیم</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5 data-key="features.security.title">پرداخت امن</h5>
+                        <p data-key="features.security.desc">درگاه‌های بانکی معتبر و رمزنگاری شده</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <h5 data-key="features.price.title">بهترین قیمت</h5>
+                        <p data-key="features.price.desc">تضمین بهترین قیمت در مقایسه با سایر سامانه‌ها</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h5 data-key="features.speed.title">رزرو سریع</h5>
+                        <p data-key="features.speed.desc">کامل کردن فرآیند رزرو در کمتر از 2 دقیقه</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h5 data-key="features.app.title">اپلیکیشن موبایل</h5>
+                        <p data-key="features.app.desc">دریافت اپلیکیشن برای iOS و Android</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <h5 data-key="features.rewards.title">جایزه و تخفیف</h5>
+                        <p data-key="features.rewards.desc">سیستم جایزه و تخفیف‌های دوره‌ای</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TESTIMONIALS ==================== -->
+    <section class="testimonials-section py-5">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2 class="section-title" data-key="testimonials.title">نظرات مشتریان</h2>
+                <p data-key="testimonials.subtitle">تجربه مسافران بلیتو</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text" data-key="testimonials.review1">
+                            بهترین سامانه رزرو بلیت که استفاده کردم. قیمت‌ها واقعا منصفانه است و پشتیبانی عالی.
+                        </p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="علی محمدی">
+                            <div>
+                                <h6>علی محمدی</h6>
+                                <span data-key="testimonials.traveler">مسافر</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text" data-key="testimonials.review2">
+                            رابط کاربری بسیار ساده و روان. در کمتر از 5 دقیقه بلیط هواپیما را رزرو کردم.
+                        </p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="فاطمه احمدی">
+                            <div>
+                                <h6>فاطمه احمدی</h6>
+                                <span data-key="testimonials.business">مسافر تجاری</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text" data-key="testimonials.review3">
+                            قیمت‌ها واقعا رقابتی است. همیشه قبل از سفر حتما در بلیتو چک می‌کنم.
+                        </p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="رضا کریمی">
+                            <div>
+                                <h6>رضا کریمی</h6>
+                                <span data-key="testimonials.frequent">مسافر دائمی</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer bg-dark text-white pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="footer-brand">
+                        <a href="#" class="navbar-brand fw-bold fs-3 d-flex align-items-center mb-3">
+                            <i class="fas fa-ticket-alt me-2"></i>
+                            <span class="brand-text">Bilito</span>
+                        </a>
+                        <p data-key="footer.about">
+                            بلیتو یک سامانه رزرو آنلاین بلیت برای سفرهای داخلی و بین‌المللی با بیش از 10 سال سابقه در صنعت گردشگری.
+                        </p>
+                        <div class="social-links mt-4">
+                            <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 data-key="footer.links.title">لینک‌های مفید</h5>
+                    <ul class="footer-links">
+                        <li><a href="#" data-key="footer.links.about">درباره ما</a></li>
+                        <li><a href="#" data-key="footer.links.contact">تماس با ما</a></li>
+                        <li><a href="#" data-key="footer.links.blog">بلاگ</a></li>
+                        <li><a href="#" data-key="footer.links.faq">سوالات متداول</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 data-key="footer.services.title">خدمات</h5>
+                    <ul class="footer-links">
+                        <li><a href="#" data-key="footer.services.flights">بلیط هواپیما</a></li>
+                        <li><a href="#" data-key="footer.services.trains">بلیط قطار</a></li>
+                        <li><a href="#" data-key="footer.services.buses">بلیط اتوبوس</a></li>
+                        <li><a href="#" data-key="footer.services.hotels">رزرو هتل</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 data-key="footer.contact.title">تماس با ما</h5>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <span data-key="footer.contact.address">تهران، خیابان ولیعصر</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone me-2"></i>
+                            <span>021-12345678</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope me-2"></i>
+                            <span>info@bilito.ir</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-4">
+                        <h6 data-key="footer.download">دانلود اپلیکیشن</h6>
+                        <div class="app-buttons">
+                            <a href="#" class="btn btn-outline-light btn-sm me-2">
+                                <i class="fab fa-google-play"></i> Google Play
+                            </a>
+                            <a href="#" class="btn btn-outline-light btn-sm">
+                                <i class="fab fa-app-store"></i> App Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <p data-key="footer.copyright">© 2024 Bilito.ir - تمامی حقوق محفوظ است.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <ul class="footer-bottom-links">
+                        <li><a href="#" data-key="footer.privacy">حریم خصوصی</a></li>
+                        <li><a href="#" data-key="footer.terms">قوانین و مقررات</a></li>
+                        <li><a href="#" data-key="footer.sitemap">نقشه سایت</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="btn btn-primary scroll-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // ==================== TRANSLATIONS ====================
+        const translations = {
+            fa: {
+                // Navigation
+                "nav.home": "صفحه اصلی",
+                "nav.flights": "بلیط هواپیما",
+                "nav.trains": "بلیط قطار",
+                "nav.buses": "بلیط اتوبوس",
+                "nav.hotels": "هتل",
+                "nav.support": "پشتیبانی",
+                "nav.login": "ورود / ثبت نام",
+                
+                // Hero Section
+                "hero.title": "سفر راحت و ارزان با بلیتو",
+                "hero.subtitle": "بلیت هواپیما، قطار و اتوبوس را با بهترین قیمت رزرو کنید",
+                
+                // Stats
+                "stats.users": "کاربر فعال",
+                "stats.routes": "مسیر فعال",
+                "stats.satisfaction": "رضایت مشتری",
+                
+                // Search
+                "search.title": "جستجوی بلیت",
+                "search.flight": "پرواز",
+                "search.train": "قطار",
+                "search.bus": "اتوبوس",
+                "search.origin": "مبدأ",
+                "search.destination": "مقصد",
+                "search.departure": "تاریخ رفت",
+                "search.return": "تاریخ برگشت",
+                "search.passengers": "مسافران",
+                "search.class": "کلاس",
+                "search.class.economy": "اکونومی",
+                "search.class.business": "بیزینس",
+                "search.class.first": "فرست کلاس",
+                "search.button": "جستجوی بلیت",
+                
+                // Featured Tickets
+                "featured.title": "پیشنهادهای ویژه امروز",
+                "featured.subtitle": "بهترین قیمت‌ها را از دست ندهید",
+                "featured.seeAll": "مشاهده همه پیشنهادها",
+                
+                // Ticket
+                "ticket.popular": "پربازدید",
+                "ticket.discount": "تخفیف ویژه",
+                "ticket.flight": "پرواز",
+                "ticket.train": "قطار",
+                "ticket.bus": "اتوبوس",
+                "ticket.economy": "اکونومی",
+                "ticket.4berth": "4 تخته",
+                "ticket.vip": "VIP",
+                "ticket.book": "رزرو بلیت",
+                
+                // Features
+                "features.title": "چرا بلیتو را انتخاب کنید؟",
+                "features.subtitle": "مزایای رزرو با ما",
+                "features.support.title": "پشتیبانی 24/7",
+                "features.support.desc": "در تمام ساعات شبانه‌روز کنار شما هستیم",
+                "features.security.title": "پرداخت امن",
+                "features.security.desc": "درگاه‌های بانکی معتبر و رمزنگاری شده",
+                "features.price.title": "بهترین قیمت",
+                "features.price.desc": "تضمین بهترین قیمت در مقایسه با سایر سامانه‌ها",
+                "features.speed.title": "رزرو سریع",
+                "features.speed.desc": "کامل کردن فرآیند رزرو در کمتر از 2 دقیقه",
+                "features.app.title": "اپلیکیشن موبایل",
+                "features.app.desc": "دریافت اپلیکیشن برای iOS و Android",
+                "features.rewards.title": "جایزه و تخفیف",
+                "features.rewards.desc": "سیستم جایزه و تخفیف‌های دوره‌ای",
+                
+                // Testimonials
+                "testimonials.title": "نظرات مشتریان",
+                "testimonials.subtitle": "تجربه مسافران بلیتو",
+                "testimonials.traveler": "مسافر",
+                "testimonials.business": "مسافر تجاری",
+                "testimonials.frequent": "مسافر دائمی",
+                "testimonials.review1": "بهترین سامانه رزرو بلیت که استفاده کردم. قیمت‌ها واقعا منصفانه است و پشتیبانی عالی.",
+                "testimonials.review2": "رابط کاربری بسیار ساده و روان. در کمتر از 5 دقیقه بلیط هواپیما را رزرو کردم.",
+                "testimonials.review3": "قیمت‌ها واقعا رقابتی است. همیشه قبل از سفر حتما در بلیتو چک می‌کنم.",
+                
+                // Footer
+                "footer.about": "بلیتو یک سامانه رزرو آنلاین بلیت برای سفرهای داخلی و بین‌المللی با بیش از 10 سال سابقه در صنعت گردشگری.",
+                "footer.links.title": "لینک‌های مفید",
+                "footer.links.about": "درباره ما",
+                "footer.links.contact": "تماس با ما",
+                "footer.links.blog": "بلاگ",
+                "footer.links.faq": "سوالات متداول",
+                "footer.services.title": "خدمات",
+                "footer.services.flights": "بلیط هواپیما",
+                "footer.services.trains": "بلیط قطار",
+                "footer.services.buses": "بلیط اتوبوس",
+                "footer.services.hotels": "رزرو هتل",
+                "footer.contact.title": "تماس با ما",
+                "footer.contact.address": "تهران، خیابان ولیعصر",
+                "footer.download": "دانلود اپلیکیشن",
+                "footer.copyright": "© 2024 Bilito.ir - تمامی حقوق محفوظ است.",
+                "footer.privacy": "حریم خصوصی",
+                "footer.terms": "قوانین و مقررات",
+                "footer.sitemap": "نقشه سایت"
+            },
+            
+            en: {
+                // Navigation
+                "nav.home": "Home",
+                "nav.flights": "Flights",
+                "nav.trains": "Trains",
+                "nav.buses": "Buses",
+                "nav.hotels": "Hotels",
+                "nav.support": "Support",
+                "nav.login": "Login / Signup",
+                
+                // Hero Section
+                "hero.title": "Easy & Affordable Travel with Bilito",
+                "hero.subtitle": "Book plane, train and bus tickets at the best prices",
+                
+                // Stats
+                "stats.users": "Active Users",
+                "stats.routes": "Active Routes",
+                "stats.satisfaction": "Customer Satisfaction",
+                
+                // Search
+                "search.title": "Search Tickets",
+                "search.flight": "Flight",
+                "search.train": "Train",
+                "search.bus": "Bus",
+                "search.origin": "Origin",
+                "search.destination": "Destination",
+                "search.departure": "Departure Date",
+                "search.return": "Return Date",
+                "search.passengers": "Passengers",
+                "search.class": "Class",
+                "search.class.economy": "Economy",
+                "search.class.business": "Business",
+                "search.class.first": "First Class",
+                "search.button": "Search Tickets",
+                
+                // Featured Tickets
+                "featured.title": "Today's Special Offers",
+                "featured.subtitle": "Don't miss the best prices",
+                "featured.seeAll": "View All Offers",
+                
+                // Ticket
+                "ticket.popular": "Popular",
+                "ticket.discount": "Special Discount",
+                "ticket.flight": "Flight",
+                "ticket.train": "Train",
+                "ticket.bus": "Bus",
+                "ticket.economy": "Economy",
+                "ticket.4berth": "4-Berth",
+                "ticket.vip": "VIP",
+                "ticket.book": "Book Ticket",
+                
+                // Features
+                "features.title": "Why Choose Bilito?",
+                "features.subtitle": "Benefits of booking with us",
+                "features.support.title": "24/7 Support",
+                "features.support.desc": "We're with you 24 hours a day, 7 days a week",
+                "features.security.title": "Secure Payment",
+                "features.security.desc": "Trusted banking gateways with encryption",
+                "features.price.title": "Best Price",
+                "features.price.desc": "Guaranteed best price compared to other platforms",
+                "features.speed.title": "Fast Booking",
+                "features.speed.desc": "Complete booking process in less than 2 minutes",
+                "features.app.title": "Mobile App",
+                "features.app.desc": "Download app for iOS and Android",
+                "features.rewards.title": "Rewards & Discounts",
+                "features.rewards.desc": "Reward system and periodic discounts",
+                
+                // Testimonials
+                "testimonials.title": "Customer Reviews",
+                "testimonials.subtitle": "Bilito travelers' experience",
+                "testimonials.traveler": "Traveler",
+                "testimonials.business": "Business Traveler",
+                "testimonials.frequent": "Frequent Traveler",
+                "testimonials.review1": "Best ticket booking system I've used. Prices are really fair and support is excellent.",
+                "testimonials.review2": "Very simple and smooth user interface. I booked plane tickets in less than 5 minutes.",
+                "testimonials.review3": "Prices are really competitive. I always check Bilito before traveling.",
+                
+                // Footer
+                "footer.about": "Bilito is an online ticket booking system for domestic and international travel with over 10 years of experience in tourism industry.",
+                "footer.links.title": "Useful Links",
+                "footer.links.about": "About Us",
+                "footer.links.contact": "Contact Us",
+                "footer.links.blog": "Blog",
+                "footer.links.faq": "FAQ",
+                "footer.services.title": "Services",
+                "footer.services.flights": "Flight Tickets",
+                "footer.services.trains": "Train Tickets",
+                "footer.services.buses": "Bus Tickets",
+                "footer.services.hotels": "Hotel Booking",
+                "footer.contact.title": "Contact Us",
+                "footer.contact.address": "Tehran, Valiasr Street",
+                "footer.download": "Download App",
+                "footer.copyright": "© 2024 Bilito.ir - All rights reserved.",
+                "footer.privacy": "Privacy Policy",
+                "footer.terms": "Terms & Conditions",
+                "footer.sitemap": "Sitemap"
+            },
+            
+            ar: {
+                // Navigation
+                "nav.home": "الصفحة الرئيسية",
+                "nav.flights": "تذاكر الطيران",
+                "nav.trains": "تذاكر القطارات",
+                "nav.buses": "تذاكر الحافلات",
+                "nav.hotels": "الفنادق",
+                "nav.support": "الدعم",
+                "nav.login": "تسجيل الدخول / التسجيل",
+                
+                // Hero Section
+                "hero.title": "سفر سهل وبأسعار معقولة مع بليتو",
+                "hero.subtitle": "احجز تذاكر الطائرة والقطار والحافلة بأفضل الأسعار",
+                
+                // Stats
+                "stats.users": "المستخدمون النشطون",
+                "stats.routes": "الطرق النشطة",
+                "stats.satisfaction": "رضا العملاء",
+                
+                // Search
+                "search.title": "بحث عن التذاكر",
+                "search.flight": "طيران",
+                "search.train": "قطار",
+                "search.bus": "حافلة",
+                "search.origin": "المصدر",
+                "search.destination": "الوجهة",
+                "search.departure": "تاريخ الذهاب",
+                "search.return": "تاريخ العودة",
+                "search.passengers": "الركاب",
+                "search.class": "الفئة",
+                "search.class.economy": "الاقتصادية",
+                "search.class.business": "رجال الأعمال",
+                "search.class.first": "الدرجة الأولى",
+                "search.button": "بحث عن التذاكر",
+                
+                // Featured Tickets
+                "featured.title": "عروض اليوم الخاصة",
+                "featured.subtitle": "لا تفوت أفضل الأسعار",
+                "featured.seeAll": "عرض جميع العروض",
+                
+                // Ticket
+                "ticket.popular": "الأكثر شعبية",
+                "ticket.discount": "خصم خاص",
+                "ticket.flight": "طيران",
+                "ticket.train": "قطار",
+                "ticket.bus": "حافلة",
+                "ticket.economy": "اقتصادية",
+                "ticket.4berth": "4 أسرة",
+                "ticket.vip": "مهم",
+                "ticket.book": "احجز التذكرة",
+                
+                // Features
+                "features.title": "لماذا تختار بليتو؟",
+                "features.subtitle": "فوائد الحجز معنا",
+                "features.support.title": "الدعم 24/7",
+                "features.support.desc": "نحن معك على مدار الساعة طوال أيام الأسبوع",
+                "features.security.title": "دفع آمن",
+                "features.security.desc": "بوابات مصرفية موثوقة مع التشفير",
+                "features.price.title": "أفضل سعر",
+                "features.price.desc": "ضمان أفضل سعر مقارنة بالمنصات الأخرى",
+                "features.speed.title": "حجز سريع",
+                "features.speed.desc": "اكتمال عملية الحجز في أقل من دقيقتين",
+                "features.app.title": "تطبيق الهاتف",
+                "features.app.desc": "تنزيل التطبيق لنظامي iOS و Android",
+                "features.rewards.title": "المكافآت والخصومات",
+                "features.rewards.desc": "نظام المكافآت والخصومات الدورية",
+                
+                // Testimonials
+                "testimonials.title": "آراء العملاء",
+                "testimonials.subtitle": "تجربة مسافري بليتو",
+                "testimonials.traveler": "مسافر",
+                "testimonials.business": "مسافر أعمال",
+                "testimonials.frequent": "مسافر دائم",
+                "testimonials.review1": "أفضل نظام لحجز التذاكر استخدمته. الأسعار عادلة حقًا والدعم ممتاز.",
+                "testimonials.review2": "واجهة مستخدم بسيطة وسلسة للغاية. حجزت تذاكر الطائرة في أقل من 5 دقائق.",
+                "testimonials.review3": "الأسعار تنافسية حقًا. دائمًا أتحقق من بليتو قبل السفر.",
+                
+                // Footer
+                "footer.about": "بليتو هو نظام حجز تذاكر عبر الإنترنت للسفر المحلي والدولي مع أكثر من 10 سنوات من الخبرة في صناعة السياحة.",
+                "footer.links.title": "روابط مفيدة",
+                "footer.links.about": "من نحن",
+                "footer.links.contact": "اتصل بنا",
+                "footer.links.blog": "المدونة",
+                "footer.links.faq": "الأسئلة الشائعة",
+                "footer.services.title": "الخدمات",
+                "footer.services.flights": "تذاكر الطيران",
+                "footer.services.trains": "تذاكر القطارات",
+                "footer.services.buses": "تذاكر الحافلات",
+                "footer.services.hotels": "حجز الفنادق",
+                "footer.contact.title": "اتصل بنا",
+                "footer.contact.address": "طهران، شارع وليعصر",
+                "footer.download": "تنزيل التطبيق",
+                "footer.copyright": "© 2024 Bilito.ir - جميع الحقوق محفوظة.",
+                "footer.privacy": "سياسة الخصوصية",
+                "footer.terms": "الشروط والأحكام",
+                "footer.sitemap": "خريطة الموقع"
+            }
+        };
+
+        // ==================== LANGUAGE MANAGEMENT ====================
+        let currentLang = localStorage.getItem('language') || 'fa';
+
+        function updateDirection(lang) {
+            const dir = lang === 'ar' || lang === 'fa' ? 'rtl' : 'ltr';
+            document.documentElement.dir = dir;
+            document.documentElement.lang = lang;
+        }
+
+        function updateLanguageText() {
+            const langText = {
+                fa: 'فارسی',
+                en: 'English',
+                ar: 'العربية'
+            };
+            
+            document.querySelector('.lang-text').textContent = langText[currentLang];
+        }
+
+        function translatePage() {
+            // Update direction
+            updateDirection(currentLang);
+            
+            // Get all elements with data-key attribute
+            const elements = document.querySelectorAll('[data-key]');
+            
+            elements.forEach(element => {
+                const key = element.getAttribute('data-key');
+                
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[currentLang][key];
+                    } else if (element.hasAttribute('title')) {
+                        element.title = translations[currentLang][key];
+                    } else {
+                        element.textContent = translations[currentLang][key];
+                    }
+                }
+            });
+            
+            // Update language switcher text
+            updateLanguageText();
+            
+            // Save to localStorage
+            localStorage.setItem('language', currentLang);
+            
+            // Add animation
+            document.body.classList.add('fade-in');
+            setTimeout(() => document.body.classList.remove('fade-in'), 600);
+        }
+
+        // ==================== THEME MANAGEMENT ====================
+        let currentTheme = localStorage.getItem('theme') || 'light';
+
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            currentTheme = theme;
+            localStorage.setItem('theme', theme);
+            
+            // Update theme toggle icon
+            const themeToggle = document.getElementById('themeToggle');
+            const moonIcon = themeToggle.querySelector('.fa-moon');
+            const sunIcon = themeToggle.querySelector('.fa-sun');
+            
+            if (theme === 'dark') {
+                moonIcon.classList.add('d-none');
+                sunIcon.classList.remove('d-none');
+            } else {
+                moonIcon.classList.remove('d-none');
+                sunIcon.classList.add('d-none');
+            }
+        }
+
+        function toggleTheme() {
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
+        // ==================== INITIALIZATION ====================
+        function init() {
+            // Hide loading spinner
+            document.querySelector('.loading-spinner').style.display = 'none';
+            document.body.classList.remove('loading');
+            document.body.classList.add('loaded');
+            
+            // Set initial theme
+            setTheme(currentTheme);
+            
+            // Set initial language
+            updateDirection(currentLang);
+            translatePage();
+            
+            // Add event listeners
+            
+            // Language switcher
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    currentLang = option.getAttribute('data-lang');
+                    translatePage();
+                    
+                    // Close dropdown
+                    const dropdown = bootstrap.Dropdown.getInstance(document.getElementById('languageDropdown'));
+                    dropdown.hide();
+                });
+            });
+            
+            // Theme toggle
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Search type buttons
+            document.querySelectorAll('.search-type').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.search-type').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                });
+            });
+            
+            // Book buttons
+            document.querySelectorAll('.ticket-card .btn-primary').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const ticketTitle = this.closest('.ticket-card').querySelector('h5').textContent;
+                    alert(`${currentLang === 'fa' ? 'رزرو بلیت: ' : currentLang === 'ar' ? 'حجز التذكرة: ' : 'Booking ticket: '}${ticketTitle}`);
+                });
+            });
+            
+            // Search form submission
+            document.querySelector('.search-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const origin = document.getElementById('origin').value;
+                const destination = document.getElementById('destination').value;
+                const departure = document.getElementById('departureDate').value;
+                
+                if (!origin || !destination || !departure) {
+                    alert(currentLang === 'fa' ? 'لطفا تمام فیلدهای ضروری را پر کنید' : 
+                          currentLang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 
+                          'Please fill all required fields');
+                    return;
+                }
+                
+                // In a real app, you would submit the form here
+                alert(currentLang === 'fa' ? `جستجوی بلیت از ${origin} به ${destination}` :
+                      currentLang === 'ar' ? `بحث عن تذاكر من ${origin} إلى ${destination}` :
+                      `Searching tickets from ${origin} to ${destination}`);
+            });
+            
+            // Initialize today's date for date inputs
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('departureDate').min = today;
+            document.getElementById('returnDate').min = today;
+            
+            // Set initial departure date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('departureDate').value = tomorrow.toISOString().split('T')[0];
+            
+            // Set return date to 3 days after departure
+            const returnDate = new Date(tomorrow);
+            returnDate.setDate(returnDate.getDate() + 3);
+            document.getElementById('returnDate').value = returnDate.toISOString().split('T')[0];
+            
+            // Add hover effects
+            document.querySelectorAll('.ticket-card, .feature-card, .testimonial-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        }
+
+        // ==================== LOAD EVENT ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show loading spinner
+            document.querySelector('.loading-spinner').style.display = 'flex';
+            document.body.classList.add('loading');
+            
+            // Initialize after a short delay to show loading spinner
+            setTimeout(init, 500);
+        });
+
+        // ==================== ADDITIONAL FEATURES ====================
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Scroll to top button functionality
+        const scrollToTopBtn = document.querySelector('.scroll-to-top');
+        
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopBtn.style.display = 'flex';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+
+        // Add active class to nav links based on scroll position
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id') || '';
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Initialize Bootstrap tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>
